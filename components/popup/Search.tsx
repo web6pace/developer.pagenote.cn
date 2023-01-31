@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {Step, WebPage} from "@pagenote/shared/lib/@types/data";
 import extApi from "@pagenote/shared/lib/generateApi";
 import {QueryValue} from "@pagenote/shared/lib/@types/database";
@@ -40,7 +40,6 @@ function mergeWebpage(webpage: Partial<WebPage>[], lights: Partial<Step>[]): Par
 export default function Search(props: { keyword: string }) {
     const {keyword=''} = props;
     const [list, setList] = useState<Partial<WebPage>[]>([])
-
     const search = function () {
         // TODO 搜索所有tab 标签页
         if (keyword.trim()) {
@@ -93,12 +92,32 @@ export default function Search(props: { keyword: string }) {
         } else {
             setList([])
         }
+
+        fetchBaidu();
+    }
+
+    function fetchBaidu() {
+        return extApi.network.fetch({
+            url: `https://www.baidu.com/s?ie=utf-8&wd=${keyword}`,
+            method:"GET",
+        }).then(function (res) {
+            console.log(res,'baidu')
+            const iframe: HTMLIFrameElement = document.querySelector('#baidu') || document.createElement('iframe')
+            iframe.srcdoc = '<!DOCTYPE html><html><head></head><body></body></html>';
+            iframe.contentDocument?.write(res.data.body)
+            const result = iframe?.contentDocument?.querySelector('#content_left');
+            const root = iframe?.contentDocument?.querySelector('body');
+            if(root && result){
+                root.innerHTML = result?.outerHTML
+            }
+        })
     }
 
     useLazyEffect(search, [keyword], 500)
 
     return (
         <div className={'p-2 w-full overflow-ellipsis'}>
+            <iframe style={{width:'100%',height:'400px'}} id={'baidu'}></iframe>
             <div className={'text-gray-400 text-xs'}>
                 {
                     keyword ? <span>PAGENOTE 为你找到  <mark>{keyword}</mark> 相关搜索标记约 {list.length} 个</span> :
