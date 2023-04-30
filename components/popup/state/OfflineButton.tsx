@@ -67,9 +67,9 @@ export default function OfflineButton() {
             <button onClick={offlineHtml}
                     disabled={!tabState?.connected}
                     className={`w-full flex-shrink m-auto btn btn-sm rounded-none ${cnt > 0 ? "btn-primary text-white" : "btn-outline"}`}>
-                <OfflineSvg className={'fill-current'}/> 网页离线化
+                <OfflineSvg className={'fill-current'}/> 添加至阅读列表
                 <span className={`tooltip tooltip-bottom tooltip-info align-bottom`}
-                      data-tip={'将当前访问的网页永久保存为离线网页。'}>
+                      data-tip={'"阅读列表"帮助你存储网页内容和链接提供以后阅读，即使你的设备没有接入互联网、原始网页已不可访问，也可以继续阅读。'}>
                 <TipInfoSvg className={'fill-current'}/>
             </span>
             </button>

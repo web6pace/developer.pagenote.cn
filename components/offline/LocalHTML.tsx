@@ -7,27 +7,11 @@ import {onVisibilityChange} from "@pagenote/shared/lib/utils/document";
 import {getDomain} from "@pagenote/shared/lib/utils/filter";
 import {basePath} from "../../const/env";
 import Empty from "../Empty";
+import useOfflineHtml from "hooks/useOfflineHtml";
 
 export default function LocalHTML() {
-    const [group, setGroup] = useState<Record<string, Partial<LocalResource>[]>>({});
+    const [group] = useOfflineHtml();
 
-    useEffect(function () {
-        fetchList();
-        return onVisibilityChange(function () {
-            fetchList()
-        })
-    }, [])
-
-    function fetchList() {
-        extApi.localResource.group({
-            groupBy: 'relatedPageUrl',
-            projection: {
-                data: -1
-            },
-        }).then(function (res) {
-            setGroup(res.data)
-        })
-    }
 
 
     let list: { url: string, name?: string, versions: Partial<LocalResource>[] }[] = []

@@ -161,8 +161,11 @@ export default function Offline() {
             <title>【pagenote离线网页】{resource?.name}</title>
         </Head>
 
-        {
-            withoutId ? <LocalHTML/> :
+        <div className="root flex">
+            <div className="left w-1/5">
+                <LocalHTML/> 
+            </div>
+            <div className="right w-full">
             (
                 resource ?
                     <div className="alert alert-info shadow-lg">
@@ -235,7 +238,8 @@ export default function Offline() {
                                                        href={`${basePath}/ext/offline.html`}>重新选择</a>
                     </div>
             )
-        }
+            </div>
+        </div>
         </>
     </RedirectToExt>;
 }
