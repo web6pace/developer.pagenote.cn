@@ -21,6 +21,7 @@
     ]
   },
   "dependencies": {
+    "@emotion/css": "^11.10.8",
     "@notionhq/client": "^2.2.5",
     "@pagenote/shared": "1.12.2",
     "@svgr/webpack": "^6.5.1",
@@ -42,9 +43,15 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.40.0",
+    "react-icons": "^4.8.0",
     "react-image-crop": "^10.0.9",
-    "react-lazy-images": "^1.1.0",
     "react-notion-x": "^6.16.0",
+    "react-virtualized-auto-sizer": "^1.0.14",
+    "react-window": "^1.8.8",
+    "slate": "^0.94.0",
+    "slate-react": "^0.94.0",
+    "slate-serializers": "^0.0.32",
+    "swiper": "^9.2.4",
     "swr": "^2.0.0",
     "use-context-selector": "^1.4.1",
     "use-delayed-render": "0.0.7"
@@ -59,6 +66,7 @@
     "@types/node": "18.11.3",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
+    "@types/react-window": "^1.8.5",
     "@types/wicg-file-system-access": "^2020.9.4",
     "autoprefixer": "^10.4.12",
     "eslint": "8.40.0",
