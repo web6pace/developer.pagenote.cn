@@ -256,7 +256,7 @@ export default function WebPageDetail(props: WebPageDetailProps) {
                 className={`shrink-0  flex mt-1 items-center text-color-500 dark:text-color-400 ${loadingClass}`}
               >
                 <time className="mr-2 text-xs md:ml-0">
-                  {dayjs(webpage?.updateAt).format('YYYY-MM-DD HH:mm')}
+                  {webpage?.updateAt && dayjs(webpage?.updateAt).format('YYYY-MM-DD HH:mm')}
                 </time>
                 <div className="flex flex-nowrap max-w-full overflow-x-auto article-tags gap-2 min-w-[80px]">
                   {webpage?.categories?.map((item, index) => (

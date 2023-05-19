@@ -1,5 +1,5 @@
 import { createContext } from 'use-context-selector'
-import React, { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
 import { WebPage } from '@pagenote/shared/lib/@types/data'
 import { Query } from '@pagenote/shared/lib/@types/database'
 
@@ -25,15 +25,23 @@ export const context = createContext<[State, Dispatch<SetStateAction<State>>]>(
 )
 
 const ContextProvider = (props: { children: React.ReactElement }) => {
-  const [innerState, setInnerState] = useState(function () {
+  const [innerState, setInnerState] = useState(initState)
+
+  useEffect(function(){
     const object = JSON.parse(
       localStorage.getItem('pageManageState') || JSON.stringify(initState)
     )
-    return {
+    const state = {
       ...initState,
-      ...object,
+      ...object
     }
-  })
+    console.log(state,'init state')
+    setInnerState(state)
+  },[])
+
+  useEffect(function(){
+    localStorage.setItem('pageManageState', JSON.stringify(innerState))
+  },[innerState])
 
   // @ts-ignore
   const updateState: Dispatch<SetStateAction<State>> = useCallback(
@@ -43,7 +51,6 @@ const ContextProvider = (props: { children: React.ReactElement }) => {
         ...state,
       }
       setInnerState(data)
-      localStorage.setItem('pageManageState', JSON.stringify(data))
     },
     [innerState]
   )
