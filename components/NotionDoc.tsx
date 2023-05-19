@@ -5,7 +5,7 @@ import { ExtendedRecordMap } from 'notion-types'
 import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { searchInNotion } from 'service/doc'
-import Image from 'next/image'
+//import Image from 'next/image'
 import Link from 'next/link'
 import { TDK } from 'const/tdk'
 import { NOTION_BASE_ROOT_PAGE, DEFAULT_BASE_DOC_PATH } from 'notion.config'
@@ -84,7 +84,7 @@ export default function NotionDoc(props: NotionDocProp) {
       ></TDKHead>
       <NotionRenderer
         components={{
-          nextImage: Image,
+          //nextImage: Image,
           nextLink: Link,
           Code,
           Collection,
