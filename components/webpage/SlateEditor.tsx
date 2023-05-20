@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { type ReactNode, useCallback } from 'react'
 import React, { useMemo } from 'react'
 import { Editor, createEditor, Descendant } from 'slate'
@@ -86,7 +87,7 @@ const withEmbeds = (editor: Editor) => {
 
 export default function SlateEditor(props: Props) {
   const { children, steps = [] } = props
-  const editor = useMemo(() => withEmbeds(withReact(createEditor())), [steps])
+  const editor = useMemo(() => withEmbeds(withReact(createEditor())), [])
 
   const initialValue: (Descendant & { type: string })[] = steps?.map((item) => {
     const slate = htmlToSlate(item.tip || '')

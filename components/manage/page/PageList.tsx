@@ -13,7 +13,8 @@ const Row = (props: {
   style: object
   rowData: Partial<WebPage>
 }) => {
-  const { selectedPageKey = [] } = useContextSelector(context, (v) => v[0])
+  const { selectedPageKey = [], batchSelected = new Set() } =
+    useContextSelector(context, (v) => v[0])
   const setState = useContextSelector(context, (v) => v[1])
 
   const { style } = props
@@ -25,6 +26,16 @@ const Row = (props: {
     })
   }
 
+  const hasSelected = batchSelected.has(item.key)
+
+  function batchSelectToggle() {
+    if (hasSelected) {
+      batchSelected.delete(item.key)
+    } else {
+      batchSelected.add(item.key)
+    }
+  }
+
   return (
     <div
       style={{
@@ -33,6 +44,7 @@ const Row = (props: {
       onClick={() => {
         setPageKey(item.key || item.url || '')
       }}
+      className="group"
     >
       <div
         className={`mx-2 border-b border-gray-500 border-opacity-20 h-full select-none
@@ -46,8 +58,20 @@ const Row = (props: {
           () => (
             <PageThumb webpage={item} />
           ),
-          [item.key]
+          [item]
         )}
+        <label
+          className={`group-hover:flex hidden absolute right-1 top-0 h-full w-8  flex items-center ${
+            hasSelected ? '!flex' : ''
+          }`}
+        >
+          <input
+            type="checkbox"
+            checked={batchSelected.has(item.key)}
+            onChange={batchSelectToggle}
+            className="checkbox mx-1"
+          />
+        </label>
       </div>
     </div>
   )
@@ -151,7 +175,7 @@ export function PageList() {
   return (
     <div
       ref={listRef}
-      className={'max-h-full h-full w-full overflow-y-auto'}
+      className={'max-h-full h-full w-full overflow-hidden'}
       tabIndex={0}
     >
       {useMemo(

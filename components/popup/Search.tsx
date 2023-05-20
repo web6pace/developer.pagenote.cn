@@ -193,7 +193,7 @@ export default function Search(props: { keyword: string }) {
               onClick={batchExport}
               className={'btn btn-sm btn-primary ml-2'}
             >
-              备份备份
+              备份
             </button>
           </div>
         </>

@@ -12,12 +12,17 @@ type State = {
   webpageFilter?: Query<WebPage>
   // 当前选中页面
   selectedPageKey?: string
+
+  // 批量选中页面
+  batchSelected?: Set<string>
 }
 
-const initState: State = {
+const initState: Required<State> = {
   groupType: 'categories',
+  webpageFilter:{},
   groupFilterName: '',
   selectedPageKey: '',
+  batchSelected: new Set()
 }
 
 export const context = createContext<[State, Dispatch<SetStateAction<State>>]>(
@@ -28,6 +33,7 @@ const ContextProvider = (props: { children: React.ReactElement }) => {
   const [innerState, setInnerState] = useState(initState)
 
   useEffect(function(){
+    // todo 存入 indexed db 或插件持久化
     const object = JSON.parse(
       localStorage.getItem('pageManageState') || JSON.stringify(initState)
     )
@@ -35,6 +41,7 @@ const ContextProvider = (props: { children: React.ReactElement }) => {
       ...initState,
       ...object
     }
+    delete state.batchSelected
     console.log(state,'init state')
     setInnerState(state)
   },[])

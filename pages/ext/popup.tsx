@@ -54,45 +54,46 @@ export default function PopupPage() {
         }
       >
         <Router>
-            <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
-            <div
-              className={
-                'w-basic h-basic relative overflow-hidden overflow-y-auto '
-              }
-            >
-              <Routes>
-                <Route index element={<CurrentTab />} />
-                <Route path={'/tab'} element={<CurrentTab />} />
-                <Route
-                  path="/clipboard"
-                  element={
-                    <Suspense>
-                      {' '}
-                      <ClipboardList />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/search"
-                  element={
-                    <Suspense>
-                      <Search keyword={keyword} />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/setting/*"
-                  element={
-                    <Suspense>
-                      {' '}
+          <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
+          <div
+            className={
+              'w-basic h-basic relative overflow-hidden overflow-y-auto '
+            }
+          >
+            <Routes>
+              <Route index element={<CurrentTab />} />
+              <Route path={'/tab'} element={<CurrentTab />} />
+              <Route
+                path="/clipboard"
+                element={
+                  <Suspense>
+                    {' '}
+                    <ClipboardList />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  <Suspense>
+                    <Search keyword={keyword} />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/setting/*"
+                element={
+                  <Suspense>
+                    <div className={'p-6'}>
                       <Setting />
-                    </Suspense>
-                  }
-                />
-                <Route path="*" element={<CurrentTab />} />
-              </Routes>
-            </div>
-          </Router>
+                    </div>
+                  </Suspense>
+                }
+              />
+              <Route path="*" element={<CurrentTab />} />
+            </Routes>
+          </div>
+        </Router>
       </div>
     </BasicLayout>
   )

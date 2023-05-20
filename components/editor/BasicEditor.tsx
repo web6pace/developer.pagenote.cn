@@ -1,4 +1,11 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useState } from 'react'
+// @ts-nocheck
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import isHotkey from 'is-hotkey'
 import { Editable, withReact, useSlate, Slate, ReactEditor } from 'slate-react'
 import {
@@ -9,7 +16,13 @@ import {
   Element as SlateElement,
   BaseEditor,
 } from 'slate'
-import {htmlToSlate, slateToHtml, payloadSlateToDomConfig, slateToDomConfig, slateToDom} from 'slate-serializers'
+import {
+  htmlToSlate,
+  slateToHtml,
+  payloadSlateToDomConfig,
+  slateToDomConfig,
+  slateToDom,
+} from 'slate-serializers'
 
 import { Button, Icon, Toolbar } from './components'
 
@@ -23,29 +36,30 @@ const HOTKEYS = {
 const LIST_TYPES = ['numbered-list', 'bulleted-list']
 const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify']
 
-const EMPTY_PARAGRAPH = [{type:"paragraph",children: [{text: ''}]}]
+const EMPTY_PARAGRAPH = [{ type: 'paragraph', children: [{ text: '' }] }]
 const EMPTY_PARAGRAPH_HTML = '<p></p>'
+
 interface Props {
   html?: string
   initialValue?: Descendant[]
   onchange?: (value: Descendant[], html?: string) => void
-  ref: {current: Editor | null}
+  ref: { current: Editor | null }
   readonly?: boolean
   placeholder?: string
 }
 
- function RichTextExample(props: Props,ref: {current: Editor | null}) {
-  const {initialValue,html,onchange,readonly=false,placeholder} = props;
-  const renderElement = useCallback(props => <Element {...props} />, [])
-  const renderLeaf = useCallback(props => <Leaf {...props} />, [])
+function RichTextExample(props: Props, ref: { current: Editor | null }) {
+  const { initialValue, html, onchange, readonly = false, placeholder } = props
+  const renderElement = useCallback((props) => <Element {...props} />, [])
+  const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
   const editor = useMemo(() => withReact(createEditor()), [])
-  if(ref){
-    ref.current = editor;
+  if (ref) {
+    ref.current = editor
   }
   const [value, setValue] = useState<Descendant[]>(EMPTY_PARAGRAPH)
 
   function onEditorChange(value: any[]) {
-    let newHtml = slateToHtml(value,{
+    let newHtml = slateToHtml(value, {
       ...payloadSlateToDomConfig,
       encodeEntities: false,
     })
@@ -54,9 +68,9 @@ interface Props {
     newHtml = newHtml === EMPTY_PARAGRAPH_HTML ? '' : newHtml
     // const slateValue = htmlToSlate(html)
     // console.log(slateValue,'slateValue')
-    if(newHtml !== html){
-      console.log(newHtml,'change',value)
-      onchange && onchange(value,newHtml)
+    if (newHtml !== html) {
+      console.log(newHtml, 'change', value)
+      onchange && onchange(value, newHtml)
     }
   }
 
@@ -76,60 +90,58 @@ interface Props {
   //   }
   // },[initialValue])
 
-  useEffect(()=>{
-    if(html!==undefined && !initialValue){
-      const value = htmlToSlate(html||"");
+  useEffect(() => {
+    if (html !== undefined && !initialValue) {
+      const value = htmlToSlate(html || '')
       const initialValue = value.length ? value : EMPTY_PARAGRAPH
-      console.log(value,'set value; html',initialValue)
-      setValue(initialValue);
+      console.log(value, 'set value; html', initialValue)
+      setValue(initialValue)
       // https://github.com/ianstormtaylor/slate/issues/4992
-      editor.children = initialValue;
+      editor.children = initialValue
     }
-  },[html])
+  }, [html])
 
   // TODO 当外部数据发生变化后，需要更新 editor 的值
   // const initValue =  htmlToSlate(html||"<p></p>")
   // console.log(initValue,'initValue')
 
-// https://github.com/ianstormtaylor/slate/issues/4710
+  // https://github.com/ianstormtaylor/slate/issues/4710
   // editor.children = value;
   return (
-      <Slate editor={editor} 
-      value={value}
-      onChange={onEditorChange}>
-        {/*<Toolbar>*/}
-        {/*  <MarkButton format="bold" icon="format_bold" />*/}
-        {/*  <MarkButton format="italic" icon="format_italic" />*/}
-        {/*  <MarkButton format="underline" icon="format_underlined" />*/}
-        {/*  <MarkButton format="code" icon="code" />*/}
-        {/*  <BlockButton format="heading-one" icon="looks_one" />*/}
-        {/*  <BlockButton format="heading-two" icon="looks_two" />*/}
-        {/*  <BlockButton format="block-quote" icon="format_quote" />*/}
-        {/*  <BlockButton format="numbered-list" icon="format_list_numbered" />*/}
-        {/*  <BlockButton format="bulleted-list" icon="format_list_bulleted" />*/}
-        {/*  <BlockButton format="left" icon="format_align_left" />*/}
-        {/*  <BlockButton format="center" icon="format_align_center" />*/}
-        {/*  <BlockButton format="right" icon="format_align_right" />*/}
-        {/*  <BlockButton format="justify" icon="format_align_justify" />*/}
-        {/*</Toolbar>*/}
-        <Editable
-            readOnly={readonly}
-            // renderElement={renderElement}
-            renderLeaf={renderLeaf}
-            placeholder={readonly?"":placeholder}
-            spellCheck
-            autoFocus={false}
-            onKeyDown={event => {
-              for (const hotkey in HOTKEYS) {
-                if (isHotkey(hotkey, event as any)) {
-                  event.preventDefault()
-                  const mark = HOTKEYS[hotkey]
-                  toggleMark(editor, mark)
-                }
-              }
-            }}
-        />
-      </Slate>
+    <Slate editor={editor} value={value} onChange={onEditorChange}>
+      {/*<Toolbar>*/}
+      {/*  <MarkButton format="bold" icon="format_bold" />*/}
+      {/*  <MarkButton format="italic" icon="format_italic" />*/}
+      {/*  <MarkButton format="underline" icon="format_underlined" />*/}
+      {/*  <MarkButton format="code" icon="code" />*/}
+      {/*  <BlockButton format="heading-one" icon="looks_one" />*/}
+      {/*  <BlockButton format="heading-two" icon="looks_two" />*/}
+      {/*  <BlockButton format="block-quote" icon="format_quote" />*/}
+      {/*  <BlockButton format="numbered-list" icon="format_list_numbered" />*/}
+      {/*  <BlockButton format="bulleted-list" icon="format_list_bulleted" />*/}
+      {/*  <BlockButton format="left" icon="format_align_left" />*/}
+      {/*  <BlockButton format="center" icon="format_align_center" />*/}
+      {/*  <BlockButton format="right" icon="format_align_right" />*/}
+      {/*  <BlockButton format="justify" icon="format_align_justify" />*/}
+      {/*</Toolbar>*/}
+      <Editable
+        readOnly={readonly}
+        // renderElement={renderElement}
+        renderLeaf={renderLeaf}
+        placeholder={readonly ? '' : placeholder}
+        spellCheck
+        autoFocus={false}
+        onKeyDown={(event) => {
+          for (const hotkey in HOTKEYS) {
+            if (isHotkey(hotkey, event as any)) {
+              event.preventDefault()
+              const mark = HOTKEYS[hotkey]
+              toggleMark(editor, mark)
+            }
+          }
+        }}
+      />
+    </Slate>
   )
 }
 
@@ -137,18 +149,18 @@ export default forwardRef(RichTextExample)
 
 const toggleBlock = (editor, format) => {
   const isActive = isBlockActive(
-      editor,
-      format,
-      TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type'
+    editor,
+    format,
+    TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type'
   )
   const isList = LIST_TYPES.includes(format)
 
   Transforms.unwrapNodes(editor, {
-    match: n =>
-        !Editor.isEditor(n) &&
-        SlateElement.isElement(n) &&
-        LIST_TYPES.includes(n.type) &&
-        !TEXT_ALIGN_TYPES.includes(format),
+    match: (n) =>
+      !Editor.isEditor(n) &&
+      SlateElement.isElement(n) &&
+      LIST_TYPES.includes(n.type) &&
+      !TEXT_ALIGN_TYPES.includes(format),
     split: true,
   })
   let newProperties: Partial<SlateElement>
@@ -184,13 +196,13 @@ const isBlockActive = (editor, format, blockType = 'type') => {
   if (!selection) return false
 
   const [match] = Array.from(
-      Editor.nodes(editor, {
-        at: Editor.unhangRange(editor, selection),
-        match: n =>
-            !Editor.isEditor(n) &&
-            SlateElement.isElement(n) &&
-            n[blockType] === format,
-      })
+    Editor.nodes(editor, {
+      at: Editor.unhangRange(editor, selection),
+      match: (n) =>
+        !Editor.isEditor(n) &&
+        SlateElement.isElement(n) &&
+        n[blockType] === format,
+    })
   )
 
   return !!match
@@ -206,46 +218,46 @@ const Element = ({ attributes, children, element }) => {
   switch (element.type) {
     case 'block-quote':
       return (
-          <blockquote style={style} {...attributes}>
-            {children}
-          </blockquote>
+        <blockquote style={style} {...attributes}>
+          {children}
+        </blockquote>
       )
     case 'bulleted-list':
       return (
-          <ul style={style} {...attributes}>
-            {children}
-          </ul>
+        <ul style={style} {...attributes}>
+          {children}
+        </ul>
       )
     case 'heading-one':
       return (
-          <h1 style={style} {...attributes}>
-            {children}
-          </h1>
+        <h1 style={style} {...attributes}>
+          {children}
+        </h1>
       )
     case 'heading-two':
       return (
-          <h2 style={style} {...attributes}>
-            {children}
-          </h2>
+        <h2 style={style} {...attributes}>
+          {children}
+        </h2>
       )
     case 'list-item':
       return (
-          <li style={style} {...attributes}>
-            {children}
-          </li>
+        <li style={style} {...attributes}>
+          {children}
+        </li>
       )
     case 'numbered-list':
       return (
-          <ol style={style} {...attributes}>
-            {children}
-          </ol>
+        <ol style={style} {...attributes}>
+          {children}
+        </ol>
       )
     default:
       const TAG = element.type
       return (
-          <TAG style={style} {...attributes}>
-            {children}
-          </TAG>
+        <TAG style={style} {...attributes}>
+          {children}
+        </TAG>
       )
   }
 }
@@ -273,34 +285,34 @@ const Leaf = ({ attributes, children, leaf }) => {
 const BlockButton = ({ format, icon }) => {
   const editor = useSlate()
   return (
-      <Button
-          active={isBlockActive(
-              editor,
-              format,
-              TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type'
-          )}
-          onMouseDown={event => {
-            event.preventDefault()
-            toggleBlock(editor, format)
-          }}
-      >
-        <Icon>{icon}</Icon>
-      </Button>
+    <Button
+      active={isBlockActive(
+        editor,
+        format,
+        TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type'
+      )}
+      onMouseDown={(event) => {
+        event.preventDefault()
+        toggleBlock(editor, format)
+      }}
+    >
+      <Icon>{icon}</Icon>
+    </Button>
   )
 }
 
 const MarkButton = ({ format, icon }) => {
   const editor = useSlate()
   return (
-      <Button
-          active={isMarkActive(editor, format)}
-          onMouseDown={event => {
-            event.preventDefault()
-            toggleMark(editor, format)
-          }}
-      >
-        <Icon>{icon}</Icon>
-      </Button>
+    <Button
+      active={isMarkActive(editor, format)}
+      onMouseDown={(event) => {
+        event.preventDefault()
+        toggleMark(editor, format)
+      }}
+    >
+      <Icon>{icon}</Icon>
+    </Button>
   )
 }
 
@@ -321,24 +333,24 @@ const initialValue: Descendant[] = [
     type: 'paragraph',
     children: [
       {
-        text:
-            "Since it's rich text, you can do things like turn a selection of text ",
+        text: "Since it's rich text, you can do things like turn a selection of text ",
       },
       { text: 'bold', bold: true },
       {
-        text:
-            ', or add a semantically rendered block quote in the middle of the page, like this:',
+        text: ', or add a semantically rendered block quote in the middle of the page, like this:',
       },
     ],
   },
   {
-    type:"img",
-    attributes:{
-        src:"https://pagenote.cn/favicon.ico"
+    type: 'img',
+    attributes: {
+      src: 'https://pagenote.cn/favicon.ico',
     },
-    children: [{
-        text:""
-    }]
+    children: [
+      {
+        text: '',
+      },
+    ],
   },
   {
     type: 'block-quote',
